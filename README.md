@@ -1,5 +1,7 @@
 # Selfscript
 
+*This project is in its initial stages, and is non-functional. It may never be functional.*
+
 A self-contained, cross-platform, minimalist scripting language!
 
 ## About
