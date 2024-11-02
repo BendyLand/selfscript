@@ -1,0 +1,64 @@
+Syntax:
+
+cp <source> <destination>       : Copy files or directories to a specified location.
+mv <source> <destination>       : Move files or directories. Can be used to rename.
+rm <path>                       : Remove a file or directory.
+mkdir <path>                    : Create a new directory.
+check_env <variable>            : Verify the existence of an environment variable. Returns a boolean.
+<variable> = <value>            : Set a local variable.
+set_env <variable> = <value>    : Set an environment variable.
+unset_env <variable>            : Remove an environment variable.
+exec <command>                  : Run a command in the system shell (for advanced tasks or commands that the language doesn’t support directly).
+puts <message>                  : Display a message to the user (for feedback or instructions).
+prompt <message>                : Prompt the user for input and returns the value.
+confirm <message>               : Display a yes/no prompt, useful for conditional steps in setup (e.g., “Do you want to continue?”). Returns a boolean.
+if <condition> then ... end     : Conditionally execute commands. Conditions could check for file existence, environment variables, or variable values.
+cond do <cond_n> then ... end   : Check several branching conditions. Use for `else if` functionality.
+for <var> in <range> do ... end : Repeat a block of commands a specified number of times (useful if a process requires retries or multiple attempts).
+label <label> and goto <label>  : Simple branching mechanism for non-structured jumps within the script, though optional if more structured flow like IF/ELSE is available.
+download <url> <destination>    : Download files from the internet.
+upload <source> <url>           : Upload files if needed for reporting logs or setup data.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Examples:
+
+puts "Welcome to the setup script!"
+set_env $MY_APP_PATH "/usr/local/my_app"
+
+# Create necessary directories
+if not exists "/usr/local/my_app" then
+    mkdir "/usr/local/my_app"
+end
+
+# Copy core files
+cp "./config.json" "/usr/local/my_app/config.json"
+
+# Check for environment variables
+if check_env $USER then
+    print "Hello, $USER!"
+else
+    set_env $USER = prompt "Enter your username: "
+end
+
+# Set and check local variables
+x = 5
+cond do
+    x >= 0 then
+        puts "x is greater than or equal to zero"
+    x < 5 then
+        puts "x is greater than to zero"
+        puts "x is less than five"
+    x < 10 then
+        puts "x is greater than to zero"
+        puts "x is less than five"
+        puts "x is less than ten"
+    end 
+end
+
+# Download additional resources if necessary
+confirm "Download additional resources?" then
+    download "https://example.com/resources.zip" "/usr/local/my_app/resources.zip"
+end
+
+puts "Setup complete. Thank you!"
