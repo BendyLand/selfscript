@@ -1,4 +1,5 @@
 const std = @import("std");
+const utils = @import("utils.zig");
 const mem = std.mem;
 
 const Name = enum {
@@ -9,21 +10,22 @@ const Name = enum {
 
 pub const Token = struct {
     name: Name,
-    args: []const u8,
+    args: utils.StringArray,
 
-    pub fn init(name: []const u8, args: []const u8) Token {
+    pub fn init(comptime name: utils.String, args: utils.StringArray) Token {
         return Token{
             .name = Token.strToName(name),
             .args = args,
         };
     }
 
-    pub fn strToName(name: []const u8) Name {
-        const mappedName =
-            if (mem.eql(u8, name, "if")) "if_"
-            else if (mem.eql(u8, name, "else")) "else_"
-            else if (mem.eql(u8, name, "for")) "for_"
-            else name;
+    pub fn strToName(name: utils.String) Name {
+        const mappedName = blk: {
+            if (mem.eql(u8, name, "if")) break :blk "if_"
+            else if (mem.eql(u8, name, "else")) break :blk "else_"
+            else if (mem.eql(u8, name, "for")) break :blk "for_"
+            else break :blk name;
+        };
         const Case = enum {
             cp, mv, rm, mkdir, check_env, set_env, unset_env, exec, puts,
             prompt, confirm, if_, then, else_, end, cond, for_, do, label, goto,
@@ -56,7 +58,7 @@ pub const Token = struct {
         };
     }
 
-    pub fn nameToStr(name: Name) []const u8 {
+    pub fn nameToStr(name: Name) utils.String {
         return switch (name) {
             Name.CP => "cp",
             Name.MV => "mv",
@@ -88,7 +90,11 @@ pub const Token = struct {
         return self.name;
     }
 
-    pub fn getArgs(self: Token) []const u8 {
+    pub fn getNameStr(self: Token) utils.String {
+        return Token.nameToStr(self.name);
+    }
+
+    pub fn getArgs(self: Token) utils.StringArray {
         return self.args;
     }
 };
