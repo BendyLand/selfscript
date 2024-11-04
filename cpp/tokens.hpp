@@ -7,28 +7,8 @@
 
 typedef enum 
 {
-    CP,
-    MV,
-    RM,
-    MKDIR,
-    CHECK_ENV,
-    SET_ENV,
-    UNSET_ENV,
-    EXEC,
-    PUTS,
-    PROMPT,
-    CONFIRM,
-    IF,
-    THEN,
-    ELSE,
-    END,
-    COND,
-    FOR,
-    DO,
-    LABEL,
-    GOTO,
-    DOWNLOAD,
-    UPLOAD,
+    CP, MV, RM, MKDIR, CHECK_ENV, SET_ENV, UNSET_ENV, EXEC, PUTS, PROMPT,
+    CONFIRM, IF, THEN, ELSE, END, COND, FOR, DO, LABEL, GOTO, DOWNLOAD, UPLOAD,
     UNKNOWN,
 } Name;
 
@@ -40,12 +20,12 @@ private:
     {
         static const std::unordered_map<std::string, Name> name_map = {
             {"cp", CP}, {"mv", MV}, {"rm", RM}, {"mkdir", MKDIR},
-            {"check_env", CHECK_ENV}, {"set_env", SET_ENV}, {"unset_env", UNSET_ENV},
-            {"exec", EXEC}, {"puts", PUTS}, {"prompt", PROMPT},
-            {"confirm", CONFIRM}, {"if", IF}, {"then", THEN}, {"else", ELSE},
-            {"end", END}, {"cond", COND}, {"for", FOR}, {"do", DO},
-            {"label", LABEL}, {"goto", GOTO}, {"download", DOWNLOAD},
-            {"upload", UPLOAD}
+            {"check_env", CHECK_ENV}, {"set_env", SET_ENV}, 
+            {"unset_env", UNSET_ENV}, {"exec", EXEC}, {"puts", PUTS}, 
+            {"prompt", PROMPT}, {"confirm", CONFIRM}, {"if", IF}, 
+            {"then", THEN}, {"else", ELSE}, {"end", END}, {"cond", COND}, 
+            {"for", FOR}, {"do", DO}, {"label", LABEL}, {"goto", GOTO}, 
+            {"download", DOWNLOAD}, {"upload", UPLOAD}
         };
         auto it = name_map.find(name);
         return it != name_map.end() ? it->second : UNKNOWN;

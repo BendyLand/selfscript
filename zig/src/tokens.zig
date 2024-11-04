@@ -11,21 +11,22 @@ const Name = enum {
 pub const Token = struct {
     name: Name,
     args: ?utils.StringArray = null, 
-
-    pub fn init(comptime name: utils.String, line: utils.String, allocator: *std.mem.Allocator) !Token {
+    pub fn init(
+        comptime name: utils.String, 
+        line: utils.String, 
+        allocator: *mem.Allocator
+    ) !Token {
         const splitArgs = utils.split(line, ' ', allocator);
         return Token{
             .name = Token.strToName(name),
             .args = splitArgs,
         };
     }
-
-    pub fn deinit(self: *Token, allocator: *std.mem.Allocator) void {
+    pub fn deinit(self: *Token, allocator: *mem.Allocator) void {
         if (self.args) |args| {
             allocator.free(args); 
         }
     }
-
     pub fn strToName(name: utils.String) Name {
         const mappedName = blk: {
             if (mem.eql(u8, name, "if")) break :blk "if_"
@@ -64,7 +65,6 @@ pub const Token = struct {
             .upload => Name.UPLOAD,
         };
     }
-
     pub fn nameToStr(name: Name) utils.String {
         return switch (name) {
             Name.CP => "cp",
@@ -92,15 +92,12 @@ pub const Token = struct {
             Name.UNKNOWN => "unknown",
         };
     }
-
     pub fn getName(self: Token) Name {
         return self.name;
     }
-
     pub fn getNameStr(self: Token) utils.String {
         return Token.nameToStr(self.name);
     }
-
     pub fn getArgs(self: Token) utils.StringArray {
         return self.args orelse &[_][]u8{};
     }
