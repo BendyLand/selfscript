@@ -6,9 +6,8 @@ const print = std.debug.print;
 
 pub fn main() !void {
     var allocator = std.heap.page_allocator;
-    const args = utils.split("<cond1> <cond2> <cond3>", ' ', &allocator);
-    defer allocator.free(args);
-    const token = Token.init("if", args);
+    var token = try Token.init("if", "<cond1> <cond2>", &allocator);
+    defer token.deinit(&allocator);
     print("Name: {s}\n", .{token.getNameStr()});
     print("Args: {s}\n", .{token.getArgs()});
 }

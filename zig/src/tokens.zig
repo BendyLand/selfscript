@@ -10,13 +10,20 @@ const Name = enum {
 
 pub const Token = struct {
     name: Name,
-    args: utils.StringArray,
+    args: ?utils.StringArray = null, 
 
-    pub fn init(comptime name: utils.String, args: utils.StringArray) Token {
+    pub fn init(comptime name: utils.String, line: utils.String, allocator: *std.mem.Allocator) !Token {
+        const splitArgs = utils.split(line, ' ', allocator);
         return Token{
             .name = Token.strToName(name),
-            .args = args,
+            .args = splitArgs,
         };
+    }
+
+    pub fn deinit(self: *Token, allocator: *std.mem.Allocator) void {
+        if (self.args) |args| {
+            allocator.free(args); 
+        }
     }
 
     pub fn strToName(name: utils.String) Name {
@@ -95,6 +102,6 @@ pub const Token = struct {
     }
 
     pub fn getArgs(self: Token) utils.StringArray {
-        return self.args;
+        return self.args orelse &[_][]u8{};
     }
 };
