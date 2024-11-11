@@ -6,7 +6,10 @@
 #include <vector>
 
 std::string read_file(std::string path);
-inline std::ostream& operator<<(std::ostream& os, std::vector<std::string> vec)
+std::vector<std::string> split(std::string str, std::string delim);
+
+template <typename T>
+inline std::ostream& operator<<(std::ostream& os, std::vector<T> vec)
 {
     size_t size = vec.size();
     for (size_t i = 0; i < size; i++) {

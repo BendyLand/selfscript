@@ -1,11 +1,12 @@
 #include "tokens.hpp"
 #include "utils.hpp"
+#include "lexer.hpp"
 
 int main()
 {
-    Token test("cp", {"ex1.txt", "ex2.txt"});
-    std::cout << "name: " << test.get_name_str() << std::endl;
-    std::cout << "args: " << test.get_args() << std::endl;
+    std::string file = read_file("../test.ss");
+    Lexer lexer(file);
+    lexer.tokenize();
 
     return 0;
 }
