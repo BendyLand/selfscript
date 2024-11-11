@@ -18,4 +18,5 @@ private:
     std::vector<Token> m_tokens;
 };
 
-Token line_to_token(std::string line);
+Token line_to_token(std::string& line);
+Token str_line_to_token(std::string& line, std::vector<std::string>& words);

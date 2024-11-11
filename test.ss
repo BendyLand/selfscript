@@ -11,7 +11,7 @@ name = "Steve"
 set_env $TEST = "This is a test"
 puts name
 puts $TEST
-unset_env $TEST 
+unset_env $TEST
 
 exec ls
 

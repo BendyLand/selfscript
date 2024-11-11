@@ -1,4 +1,5 @@
 const std = @import("std");
+const bufPrint = std.fmt.bufPrint();
 pub const String = []const u8;
 pub const StringArray = []const []const u8;
 
@@ -29,4 +30,16 @@ pub fn split(input: String, delimiter: u8, allocator: *std.mem.Allocator) String
         std.debug.print("Error converting to owned slice: {any}\n", .{err});
         return &[_][]const u8{};
     };
+}
+
+pub fn readFileToString(filename: []const u8, allocator: *std.mem.Allocator) ![]const u8 {
+    const file = try std.fs.cwd().openFile(filename, .{.mode = .read_only});
+    defer file.close();
+    const file_size = try file.getEndPos();
+    const buffer = try allocator.alloc(u8, file_size);
+    const bytes_read = try file.readAll(buffer);
+    if (bytes_read != file_size) {
+        return error.UnexpectedEOF;
+    }
+    return buffer;
 }
